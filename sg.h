@@ -1,10 +1,6 @@
 
-#define UCHAR unsigned char
-
 typedef unsigned short Uint16;
 typedef unsigned int Uint32;
-typedef uint16_t	Uint16;
-typedef uint32_t	Uint32;
 
 //-----------------------------------------------
 #define FBIOGET_FSCREENINFO	0x4602

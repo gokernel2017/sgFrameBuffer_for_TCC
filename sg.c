@@ -19,6 +19,7 @@
 #include <tcclib.h>
 #include "sg.h"
 
+#define UCHAR unsigned char
 #define CHAR_SPACE 32
 
 static const unsigned char fixed_font[14][764] = {
@@ -170,6 +171,17 @@ void sgBlit32 (BMP *bmp) {
         }
     }
 }
+
+/*
+	for(int i=0; i<height; i++) {
+		for(int j=0; j<width; j++) {
+			dptr[j * 4 + red_offs] = sptr[j * 4];
+			dptr[j * 4 + green_offs] = sptr[j * 4 + 1];
+			dptr[j * 4 + blue_offs] = sptr[j * 4 + 2];
+		}
+		sptr += src_rect.width * 4;
+		dptr += dest_rect.width * 4;
+*/
 
 BMP *sgNewBmp32 (int w, int h) {
     BMP *bmp;
