@@ -124,7 +124,7 @@ void hline32 (int x1, int y, int x2, int color) {
     UCHAR *p = (UCHAR*)(FB.screen + (y * FB.line_length + x1 * 4));
     int i;
     for (i = x1; i <= x2; i++) {
-        *(Uint32 *)p = color; // Set color
+        *(unsigned int*)p = color; // Set color
         p += 4;
     }
 }
@@ -135,7 +135,7 @@ void vline32 (int x, int y1, int y2, int color) {
     UCHAR *p = (UCHAR*)(FB.screen + (y1 * FB.line_length + x * 4));
     int i;
     for (i = y1; i <= y2; i++) {
-        *(Uint32 *)p = color; // Set color
+        *(unsigned int *)p = color; // Set color
         p += FB.line_length;
     }
 }
@@ -146,7 +146,7 @@ void hline16 (int x1, int y, int x2, int color) {
     UCHAR *p = (UCHAR*)(FB.screen + (y * FB.line_length + x1 * 2));
     int i;
     for (i = x1; i <= x2; i++) {
-        *(Uint16 *)p = color; // Set color
+        *(unsigned short *)p = color; // Set color
         p += 2;
     }
 }
@@ -157,7 +157,7 @@ void vline16 (int x, int y1, int y2, int color) {
     UCHAR *p = (UCHAR*)(FB.screen + (y1 * FB.line_length + x * 2));
     int i;
     for (i = y1; i <= y2; i++) {
-        *(Uint16 *)p = color; // Set color
+        *(unsigned short *)p = color; // Set color
         p += FB.line_length;
     }
 }
@@ -173,6 +173,7 @@ int makecol32 (UCHAR r, UCHAR g, UCHAR b) {
     return b + (g << 8) + (r << 16);
 }
 
+/*
 void sgBlit32 (BMP *bmp) {
     int i, y;
     register UCHAR *data = bmp->data;
@@ -180,6 +181,22 @@ void sgBlit32 (BMP *bmp) {
         UCHAR *p = (UCHAR*)(FB.screen + (y * FB.line_length + 0 * 4));
         for (i = 0; i < bmp->w * 4; i++) {
             *p++ = *data++;
+        }
+    }
+}
+*/
+void sgBlit32 (BMP *bmp) {
+    int i, y;
+    register UCHAR *data = bmp->data;
+    for (y = 0; y < bmp->h; y++) {
+        UCHAR *p = (UCHAR*)(FB.screen + (y * FB.line_length + 0 * 4));
+        for (i = 0; i < bmp->w; i++) {
+            //
+            // ... copy 4 bytes ... ;)
+            //
+            *(unsigned int *)( p ) = *(unsigned int *)( data );
+            p += 4;
+            data += 4;
         }
     }
 }
@@ -203,7 +220,7 @@ void hlineBMP32 (BMP *bmp, int x1, int y, int x2, int color) {
     UCHAR *p = (UCHAR*)(bmp->data + (y * bmp->line_length + x1 * 4));
     int i;
     for (i = x1; i <= x2; i++) {
-        *(Uint32 *)p = color; // Set color
+        *(unsigned int *)p = color; // Set color
         p += 4;
     }
 }
@@ -212,7 +229,7 @@ void vlineBMP32 (BMP *bmp, int x, int y1, int y2, int color) {
     UCHAR *p = (UCHAR*)(bmp->data + (y1 * bmp->line_length + x * 4));
     int i;
     for (i = y1; i <= y2; i++) {
-        *(Uint32 *)p = color; // Set color
+        *(unsigned int *)p = color; // Set color
         p += bmp->line_length;
     }
 }
@@ -226,7 +243,7 @@ void DrawPixel32 (BMP *bmp, int x, int y, int color) {
 //    if (fb_var_info.bits_per_pixel == 32)
 //        *((unsigned int*)(FB.screen + location)) = color;
 //    *(Uint32 *)(bmp->data + (y * bmp->line_length + x * 4)) = color;
-    *(Uint32 *)(bmp->data + y * bmp->line_length + x * 4) = color;
+    *(unsigned int *)(bmp->data + y * bmp->line_length + x * 4) = color;
 }
 
 // 8 x 13

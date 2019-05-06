@@ -1,7 +1,4 @@
 
-typedef unsigned short Uint16;
-typedef unsigned int Uint32;
-
 //-----------------------------------------------
 #define FBIOGET_FSCREENINFO	0x4602
 #define FBIOGET_VSCREENINFO	0x4600
@@ -21,25 +18,25 @@ struct sg_fix_screeninfo {
     char id[16];			// identification string eg "TT Builtin"
     unsigned long smem_start;	// Start of frame buffer mem
 					// (physical address)
-    Uint32 smem_len;			// Length of frame buffer mem
-    Uint32 type;			// see FB_TYPE_*	
-    Uint32 type_aux;			// Interleave for interleaved Planes
-    Uint32 visual;			// see FB_VISUAL_*		
-    Uint16 xpanstep;			// zero if no hardware panning
-    Uint16 ypanstep;			// zero if no hardware panning 
-    Uint16 ywrapstep;		// zero if no hardware ywrap   
-    Uint32 line_length;		// length of a line in bytes  
+    uint32_t smem_len;			// Length of frame buffer mem
+    uint32_t type;			// see FB_TYPE_*	
+    uint32_t type_aux;			// Interleave for interleaved Planes
+    uint32_t visual;			// see FB_VISUAL_*		
+    uint16_t xpanstep;			// zero if no hardware panning
+    uint16_t ypanstep;			// zero if no hardware panning 
+    uint16_t ywrapstep;		// zero if no hardware ywrap   
+    uint32_t line_length;		// length of a line in bytes  
     unsigned long mmio_start;	// Start of Memory Mapped I/O  
 					// (physical address)
-    Uint32 mmio_len;			// Length of Memory Mapped I/O 
-    Uint32 accel;			// Indicate to driver which
+    uint32_t mmio_len;			// Length of Memory Mapped I/O 
+    uint32_t accel;			// Indicate to driver which
 					//  specific chip/card we have
-    Uint16 reserved[3];		// Reserved for future compatibility
+    uint16_t reserved[3];		// Reserved for future compatibility
 };
 struct sg_bitfield {
-    Uint32 offset;                // beginning of bitfield 
-    Uint32 length;                // length of bitfield
-    Uint32 msb_right;             // !=0: Most significant bit is right
+    uint32_t offset;                // beginning of bitfield 
+    uint32_t length;                // length of bitfield
+    uint32_t msb_right;             // !=0: Most significant bit is right
 };
 struct sg_var_screeninfo {
     uint32_t xres;                  // visible resolution
