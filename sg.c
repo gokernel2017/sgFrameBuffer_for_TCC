@@ -19,9 +19,6 @@
 #include <tcclib.h>
 #include "sg.h"
 
-#define UCHAR unsigned char
-#define CHAR_SPACE 32
-
 static const unsigned char fixed_font[14][764] = {
   "                                   xx                                                                                                                                                                                                                                                                                                                                                                                                                                                                              xx             xxx                                                                                                                                                                                                                                                      ",
   "                                   xx    xxx                                                                                                                                                                                                                                                                                                                                                                                                                                                                      xxxx             xx                                                                      xx       xx                                                                                                                                                                     ",
@@ -42,13 +39,25 @@ static const unsigned char fixed_font[14][764] = {
 //--------------------------------------------------------------------
 //#########################  ENUM / DEFINE  ##########################
 //--------------------------------------------------------------------
+//
+#define UCHAR unsigned char
+#define CHAR_SPACE 32
 
 //--------------------------------------------------------------------
 //#############################  STRUCT  #############################
 //--------------------------------------------------------------------
 //
-
-static FB_DRIVE FB;
+typedef struct {
+    UCHAR   *screen;
+    int     smem_len; // fb_fix_info.smem_len
+    int     w;        // fb_var_info.xres
+    int     h;        // fb_var_info.yres
+    int     bpp;      // 8 | 16 | 32
+    int     line_length;
+    int     accel_flags;
+    char    drive_name [20];
+    int     fd;       // file id
+}FB_DRIVE;
 
 typedef struct {
     UCHAR   *data; // pixels
@@ -56,6 +65,8 @@ typedef struct {
     int     h;
     int     line_length;
 }BMP;
+
+static FB_DRIVE FB;
 
 int sgInit (void) {
     static int init = 0;
@@ -163,25 +174,15 @@ int makecol32 (UCHAR r, UCHAR g, UCHAR b) {
 }
 
 void sgBlit32 (BMP *bmp) {
-    int i, y, pos = 0;
+    int i, y;
+    register UCHAR *data = bmp->data;
     for (y = 0; y < bmp->h; y++) {
         UCHAR *p = (UCHAR*)(FB.screen + (y * FB.line_length + 0 * 4));
         for (i = 0; i < bmp->w * 4; i++) {
-            *p++ = bmp->data[pos++];
+            *p++ = *data++;
         }
     }
 }
-
-/*
-	for(int i=0; i<height; i++) {
-		for(int j=0; j<width; j++) {
-			dptr[j * 4 + red_offs] = sptr[j * 4];
-			dptr[j * 4 + green_offs] = sptr[j * 4 + 1];
-			dptr[j * 4 + blue_offs] = sptr[j * 4 + 2];
-		}
-		sptr += src_rect.width * 4;
-		dptr += dest_rect.width * 4;
-*/
 
 BMP *sgNewBmp32 (int w, int h) {
     BMP *bmp;
@@ -273,9 +274,6 @@ int main (void) {
     int color;
     BMP *b = NULL;
 
-    printf ("Sizeof uint16_t = %d\n", (int)sizeof(uint16_t));
-    printf ("Sizeof uint32_t = %d\n", (int)sizeof(uint32_t));
-
     printf ("Sizeof sg_fix_screeninfo = %d\n", (int)sizeof(struct sg_fix_screeninfo));
     printf ("Sizeof sg_var_screeninfo = %d\n", (int)sizeof(struct sg_var_screeninfo));
 
@@ -290,12 +288,12 @@ int main (void) {
         if (FB.bpp == 32)
             color = makecol32(255,130,30);
 
-        if (FB.bpp==32 && b) {
+        if (FB.bpp == 32 && b) {
             hlineBMP32 (b, 50, 50, 200, color);
             vlineBMP32 (b, 50, 50, 200, color);
             DrawText (b, "Hello World ... From SG FrameBuffer", 100, 100, color);
             //
-            // Update/dosplay the BMP
+            // Update/display the BMP
             //
             sgBlit32 (b);
         }
@@ -307,4 +305,5 @@ int main (void) {
 
     return 0;
 }
+
 
