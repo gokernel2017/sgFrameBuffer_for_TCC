@@ -173,18 +173,6 @@ int makecol32 (UCHAR r, UCHAR g, UCHAR b) {
     return b + (g << 8) + (r << 16);
 }
 
-/*
-void sgBlit32 (BMP *bmp) {
-    int i, y;
-    register UCHAR *data = bmp->data;
-    for (y = 0; y < bmp->h; y++) {
-        UCHAR *p = (UCHAR*)(FB.screen + (y * FB.line_length + 0 * 4));
-        for (i = 0; i < bmp->w * 4; i++) {
-            *p++ = *data++;
-        }
-    }
-}
-*/
 void sgBlit32 (BMP *bmp) {
     int i, y;
     register UCHAR *data = bmp->data;
@@ -209,7 +197,7 @@ BMP *sgNewBmp32 (int w, int h) {
             bmp->w = w;
             bmp->h = h;
             bmp->line_length = w * 4;
-            memset(bmp->data, 0, len);
+            memset (bmp->data, 32, len);
             return bmp;
         }
     }
@@ -306,8 +294,10 @@ int main (void) {
             color = makecol32(255,130,30);
 
         if (FB.bpp == 32 && b) {
-            hlineBMP32 (b, 50, 50, 200, color);
-            vlineBMP32 (b, 50, 50, 200, color);
+            hlineBMP32 (b, 50, 50, 450, color);  // -
+            hlineBMP32 (b, 50, 150, 450, color); // -
+            vlineBMP32 (b, 50, 50, 150, color);  // |
+            vlineBMP32 (b, 450, 50, 150, color); // |
             DrawText (b, "Hello World ... From SG FrameBuffer", 100, 100, color);
             //
             // Update/display the BMP
