@@ -316,7 +316,7 @@ int main (void) {
                     now = t;
                     if (count < 0)
                         break;
-                    sprintf (buf, "FPS: %d | wait %d", fps, count--);
+                    sprintf (buf, "FPS: %d | Wait %d", fps, count--);
                     fps = 0;
 
                     // bg: FPS test
