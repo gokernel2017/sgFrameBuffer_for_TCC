@@ -275,6 +275,10 @@ void DrawText (BMP *bmp, char *text, int x, int y, int color) {
   }
 }
 
+char buf[100];
+int fps, count = 15;
+long now;
+
 int main (void) {
     int color;
     BMP *b = NULL;
@@ -294,16 +298,60 @@ int main (void) {
             color = makecol32(255,130,30);
 
         if (FB.bpp == 32 && b) {
+            sprintf (buf, "%s", "FPS: %d", fps);
             hlineBMP32 (b, 50, 50, 450, color);  // -
             hlineBMP32 (b, 50, 150, 450, color); // -
             vlineBMP32 (b, 50, 50, 150, color);  // |
             vlineBMP32 (b, 450, 50, 150, color); // |
-            DrawText (b, "Hello World ... From SG FrameBuffer", 100, 100, color);
-            //
-            // Update/display the BMP
-            //
-            sgBlit32 (b);
-        }
+            DrawText (b, "Please Wait 15 SECONDS: ...", 100, 75, color);
+            DrawText (b, buf, 100, 100, color);
+
+            for (;;) {
+
+                //
+                // each SECOND:
+                //
+                long t = time (NULL);
+                if (t != now) {
+                    now = t;
+                    if (count < 0)
+                        break;
+                    sprintf (buf, "FPS: %d | wait %d", fps, count--);
+                    fps = 0;
+
+                    // bg: FPS test
+                    //---------------------------------------
+                    hlineBMP32 (b, 100, 100, 300, 0);  // -
+                    hlineBMP32 (b, 100, 101, 300, 0);  // -
+                    hlineBMP32 (b, 100, 102, 300, 0);  // -
+                    hlineBMP32 (b, 100, 103, 300, 0);  // -
+                    hlineBMP32 (b, 100, 104, 300, 0);  // -
+                    hlineBMP32 (b, 100, 105, 300, 0);  // -
+                    hlineBMP32 (b, 100, 106, 300, 0);  // -
+                    hlineBMP32 (b, 100, 107, 300, 0);  // -
+                    hlineBMP32 (b, 100, 108, 300, 0);  // -
+                    hlineBMP32 (b, 100, 109, 300, 0);  // -
+                    hlineBMP32 (b, 100, 110, 300, 0);  // -
+                    hlineBMP32 (b, 100, 111, 300, 0);  // -
+                    hlineBMP32 (b, 100, 112, 300, 0);  // -
+                    hlineBMP32 (b, 100, 113, 300, 0);  // -
+                    hlineBMP32 (b, 100, 114, 300, 0);  // -
+                    //---------------------------------------
+
+                    DrawText (b, buf, 100, 100, color);
+
+                }// if (t != now)
+
+                fps++;
+
+                //
+                // Update/display the BMP
+                //
+                sgBlit32 (b);
+
+            }// for (;;)
+
+        }// if (FB.bpp == 32 && b)
 
         sgQuit();
     }
