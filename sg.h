@@ -8,6 +8,7 @@ int ioctl (int fd, unsigned long request, ...);
 void *mmap (void *addr, size_t length, int prot, int flags, int fd, int offset);
 int munmap (void *addr, size_t len);
 long time (long *t);
+void usleep (int t);
 
 #define O_RDWR      2
 #define PROT_READ   1

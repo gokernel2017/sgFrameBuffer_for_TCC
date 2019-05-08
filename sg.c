@@ -174,17 +174,18 @@ int makecol32 (UCHAR r, UCHAR g, UCHAR b) {
 }
 
 void sgBlit32 (BMP *bmp) {
-    int i, y;
+    int i, y, size_w_div_2 = bmp->w/2;;
     register UCHAR *data = bmp->data;
     for (y = 0; y < bmp->h; y++) {
         UCHAR *p = (UCHAR*)(FB.screen + (y * FB.line_length + 0 * 4));
-        for (i = 0; i < bmp->w; i++) {
+//        for (i = 0; i < bmp->w/2; i++) {
+        for (i = 0; i < size_w_div_2; i++) {
             //
-            // ... copy 4 bytes ... ;)
+            // ... copy 8 bytes (long) ... ;)
             //
-            *(unsigned int *)( p ) = *(unsigned int *)( data );
-            p += 4;
-            data += 4;
+            *(unsigned long *)( p ) = *(unsigned long *)( data );
+            p += 8;
+            data += 8;
         }
     }
 }
@@ -316,7 +317,7 @@ int main (void) {
                     now = t;
                     if (count < 0)
                         break;
-                    sprintf (buf, "FPS: %d | Wait %d", fps, count--);
+                    sprintf (buf, "FPS: %d | wait %d", fps, count--);
                     fps = 0;
 
                     // bg: FPS test
@@ -348,6 +349,7 @@ int main (void) {
                 // Update/display the BMP
                 //
                 sgBlit32 (b);
+                //usleep(500);
 
             }// for (;;)
 
