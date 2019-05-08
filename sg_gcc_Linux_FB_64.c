@@ -2,13 +2,11 @@
 //
 // SUMMER GRAPHIC FB: Linux Frame Buffer Library
 //
-// <<<<<<<<<<<<<  FOR TCC COMPILER  >>>>>>>>>>>>
-//
 // FILE:
 //   sg.c
 //
 // COMPILE:
-//   tcc sg.c -o sg /usr/lib64/libc.so -Wall
+//   gcc sg.c -o sg -O1 -Wall
 //
 // START DATE: 05/05/2019 - 07:00
 //
