@@ -3,10 +3,10 @@
 // SUMMER GRAPHIC FB: Linux Frame Buffer Library
 //
 // FILE:
-//   sg.c
+//   sg_gcc_Linux_FB_64.c
 //
 // COMPILE:
-//   gcc sg.c -o sg -O1 -Wall
+//   gcc sg_gcc_Linux_FB_64.c -o sg_gcc -O1 -Wall
 //
 // START DATE: 05/05/2019 - 07:00
 //
