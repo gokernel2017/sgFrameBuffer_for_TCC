@@ -8,7 +8,7 @@
 //   sg.c
 //
 // COMPILE:
-//   tcc sg.c -o sg /usr/lib64/libc.so -Wall
+//   tcc sg.c -o sg /usr/lib64/libc.so -O1 -Wall
 //
 // START DATE: 05/05/2019 - 07:00
 //
